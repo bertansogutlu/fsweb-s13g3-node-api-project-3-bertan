@@ -1,5 +1,7 @@
 function logger(req, res, next) {
   // SİHRİNİZİ GÖRELİM
+  console.log(`${req.method} ${req.url} ${new Date().toISOString()}`)
+  next();
 }
 
 function validateUserId(req, res, next) {
@@ -15,3 +17,4 @@ function validatePost(req, res, next) {
 }
 
 // bu işlevleri diğer modüllere değdirmeyi unutmayın
+module.exports = {logger, validateUserId, validateUser, validatePost}

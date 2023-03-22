@@ -1,17 +1,31 @@
 const express = require('express');
 
 // `users-model.js` ve `posts-model.js` sayfalarına ihtiyacınız var
+const userModel = require('./users-model');
+const postModel = require('../posts/posts-model');
 // ara yazılım fonksiyonları da gereklidir
-
+const middleare = require('../middleware/middleware');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // TÜM KULLANICILARI İÇEREN DİZİYİ DÖNDÜRÜN
+  try {
+    const users = await userModel.get();
+    res.json(users)
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı bilgileri alınamadı"});
+  }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // USER NESNESİNİ DÖNDÜRÜN
   // user id yi getirmek için bir ara yazılım gereklidir
+  try {
+    const user = await userModel.getById(req.params.id);
+    res.json(user)
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı bilgileri alınamadı"});
+  }
 });
 
 router.post('/', (req, res) => {
