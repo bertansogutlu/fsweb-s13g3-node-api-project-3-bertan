@@ -27,9 +27,15 @@ router.get('/:id', middleare.validateUserId, async (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', middleare.validateUser, async (req, res) => {
   // YENİ OLUŞTURULAN USER NESNESİNİ DÖNDÜRÜN
   // istek gövdesini doğrulamak için ara yazılım gereklidir.
+  try {
+    const newUser = await userModel.insert(req.user);
+    res.json(newUser);
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcılar alınamadı"});
+  }
 });
 
 router.put('/:id', (req, res) => {
