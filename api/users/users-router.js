@@ -61,9 +61,15 @@ router.delete('/:id', middleare.validateUserId, async (req, res) => {
   }
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', middleare.validateUserId, async (req, res) => {
   // USER POSTLARINI İÇEREN BİR DİZİ DÖNDÜRÜN
   // user id yi doğrulayan bir ara yazılım gereklidir.
+  try {
+    const posts = await userModel.getUserPosts(req.params.id);
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı gönderisi bulunmadı"});
+  }
 });
 
 router.post('/:id/posts', (req, res) => {
