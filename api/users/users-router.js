@@ -50,9 +50,15 @@ router.put('/:id', middleare.validateUserId, middleare.validateUser, async (req,
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', middleare.validateUserId, async (req, res) => {
   // SON SİLİNEN USER NESNESİ DÖNDÜRÜN
   // user id yi doğrulayan bir ara yazılım gereklidir.
+  try {
+    await userModel.remove(req.params.id);
+    res.json(req.user);
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı silinemedi"});
+  }
 });
 
 router.get('/:id/posts', (req, res) => {
