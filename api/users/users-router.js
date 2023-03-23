@@ -17,14 +17,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', middleare.validateUserId, async (req, res) => {
   // USER NESNESİNİ DÖNDÜRÜN
   // user id yi getirmek için bir ara yazılım gereklidir
   try {
-    const user = await userModel.getById(req.params.id);
-    res.json(user)
+    res.json(req.user)
   } catch (error) {
-    res.status(500).json({message:"Kullanıcı bilgileri alınamadı"});
+    res.status(500).json({message:"Kullanıcılar alınamadı"});
   }
 });
 
