@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   // TÜM KULLANICILARI İÇEREN DİZİYİ DÖNDÜRÜN
   try {
     const users = await userModel.get();
-    res.json(users)
+    res.json(users);
   } catch (error) {
     res.status(500).json({message:"Kullanıcı bilgileri alınamadı"});
   }
@@ -38,10 +38,16 @@ router.post('/', middleare.validateUser, async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', middleare.validateUserId, middleare.validateUser, async (req, res) => {
   // YENİ GÜNCELLENEN USER NESNESİNİ DÖNDÜRÜN
   // user id yi doğrulayan ara yazılım gereklidir
   // ve istek gövdesini doğrulayan bir ara yazılım gereklidir.
+  try {
+    const updateUsert = await userModel.update(req.params.id, req.body);
+    res.json(updateUsert);
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı eklenemedi"});
+  }
 });
 
 router.delete('/:id', (req, res) => {
