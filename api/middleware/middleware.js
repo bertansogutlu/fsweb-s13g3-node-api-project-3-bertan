@@ -30,6 +30,13 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // SİHRİNİZİ GÖRELİM
+  const newPost = req.body;
+  if(newPost.text) {
+    res.body = newPost;
+    next();
+  } else {
+    res.status(400).json({ message: "gerekli name alanı eksik" })
+  }
 }
 
 // bu işlevleri diğer modüllere değdirmeyi unutmayın

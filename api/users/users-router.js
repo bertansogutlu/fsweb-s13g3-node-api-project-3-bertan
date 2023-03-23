@@ -72,10 +72,16 @@ router.get('/:id/posts', middleare.validateUserId, async (req, res) => {
   }
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', middleare.validateUserId, middleare.validatePost, async (req, res) => {
   // YENİ OLUŞTURULAN KULLANICI NESNESİNİ DÖNDÜRÜN
   // user id yi doğrulayan bir ara yazılım gereklidir.
   // ve istek gövdesini doğrulayan bir ara yazılım gereklidir.
+  try {
+    const newPost = await postModel.insert({user_id:req.params.id, text:req.body.text});
+    res.json(newPost);
+  } catch (error) {
+    res.status(500).json({message:"Kullanıcı gönderisi bulunmadı"});
+  }
 });
 
 // routerı dışa aktarmayı unutmayın
