@@ -77,7 +77,7 @@ router.post('/:id/posts', middleare.validateUserId, middleare.validatePost, asyn
   // user id yi doğrulayan bir ara yazılım gereklidir.
   // ve istek gövdesini doğrulayan bir ara yazılım gereklidir.
   try {
-    const newPost = await postModel.insert({user_id:req.params.id, text:req.body.text});
+    const newPost = await postModel.insert({user_id:req.params.id, ...req.body});
     res.json(newPost);
   } catch (error) {
     res.status(500).json({message:"Kullanıcı gönderisi bulunmadı"});
